@@ -1,0 +1,16 @@
+version: '3.8'
+networks:
+  default:
+    name: my-network
+    driver: bridge
+
+services:
+  db-effective-mobile:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: db-effective-mobile
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: DBPASSWORD
+    ports:
+      - "5435:5432"
