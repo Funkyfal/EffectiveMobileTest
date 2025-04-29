@@ -1,0 +1,41 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-card-table
+      author: anton
+      changes:
+        - createTable:
+            tableName: card
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: encrypted_number
+                  type: VARCHAR(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: owner
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiration_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: balance
+                  type: NUMERIC(15,2)
+                  defaultValueNumeric: 0
+                  constraints:
+                    nullable: false

@@ -1,12 +1,11 @@
 package EffectiveMobile.Test.Controllers;
 
+import EffectiveMobile.Test.DTO.CardCreateDto;
 import EffectiveMobile.Test.entities.Card;
 import EffectiveMobile.Test.services.CardService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,5 +21,15 @@ public class CardController {
     @GetMapping("/{card_id}")
     public Optional<Card> getOneCard(@PathVariable("card_id") Long id){
         return cardService.getCard(id);
+    }
+
+    @GetMapping("/cards")
+    public List<Card> getAllCards(){
+        return cardService.getAllCards();
+    }
+
+    @PostMapping("/new")
+    public Card addNewCard(@RequestBody CardCreateDto dto){
+        return cardService.addCard(dto);
     }
 }

@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: Test
+
+  datasource:
+    url: jdbc:postgresql://localhost:5435/db-effective-mobile
+    username: postgres
+    password: DBPASSWORD
+
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+    contexts: development, production
+    default-schema: public
+    enabled: true
