@@ -1,50 +1,61 @@
 package EffectiveMobile.Test.security.CardEncryption;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Base64;
 
+@Component
 public class CryptoUtil {
     private static final String ALGO = "AES/GCM/NoPadding";
-    private static final byte[] IV = new byte[12];
+    private final SecretKey key;
 
-    // Заглушка на данном этапе, в проде должен храниться в безопасном месте
-    private static final SecretKey KEY = generateKey();
-
-    private static SecretKey generateKey() {
-        try {
-            KeyGenerator kg = KeyGenerator.getInstance("AES");
-            kg.init(256);
-            return kg.generateKey();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public CryptoUtil(@Value("${app.crypto.base64Key}") String base64Key) {
+        byte[] keyBytes = Base64.getDecoder().decode(base64Key);
+        this.key = new SecretKeySpec(keyBytes, "AES");
     }
 
-    public static String encrypt(String plain) {
-        try {
-            Cipher cipher = Cipher.getInstance(ALGO);
-            GCMParameterSpec spec = new GCMParameterSpec(128, IV);
-            cipher.init(Cipher.ENCRYPT_MODE, KEY, spec);
-            byte[] encrypted = cipher.doFinal(plain.getBytes());
-            return Base64.getEncoder().encodeToString(encrypted);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public String encrypt(String plainText)
+            throws NoSuchPaddingException,
+            NoSuchAlgorithmException,
+            InvalidAlgorithmParameterException,
+            InvalidKeyException,
+            IllegalBlockSizeException,
+            BadPaddingException {
+        byte[] iv = new byte[12];
+        SecureRandom rnd = new SecureRandom();
+        rnd.nextBytes(iv);
+        GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+        Cipher cipher = Cipher.getInstance(ALGO);
+        cipher.init(Cipher.ENCRYPT_MODE, key, spec);
+        byte[] cipherBytes = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(iv) + ":" +
+                Base64.getEncoder().encodeToString(cipherBytes);
     }
 
-    public static String decrypt(String encrypted) {
-        try {
-            Cipher cipher = Cipher.getInstance(ALGO);
-            GCMParameterSpec spec = new GCMParameterSpec(128, IV);
-            cipher.init(Cipher.DECRYPT_MODE, KEY, spec);
-            byte[] decoded = Base64.getDecoder().decode(encrypted);
-            return new String(cipher.doFinal(decoded));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+    public String decrypt(String stored)
+            throws NoSuchPaddingException,
+            NoSuchAlgorithmException,
+            InvalidAlgorithmParameterException,
+            InvalidKeyException,
+            IllegalBlockSizeException,
+            BadPaddingException {
+        String[] parts = stored.split(":");
+        byte[] iv = Base64.getDecoder().decode(parts[0]);
+        byte[] cipherBytes = Base64.getDecoder().decode(parts[1]);
+        GCMParameterSpec spec = new GCMParameterSpec(128, iv);
+        Cipher cipher = Cipher.getInstance(ALGO);
+        cipher.init(Cipher.DECRYPT_MODE, key, spec);
+        byte[] plainBytes = cipher.doFinal(cipherBytes);
+        return new String(plainBytes, StandardCharsets.UTF_8);
     }
 }
 

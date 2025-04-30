@@ -3,6 +3,8 @@ package EffectiveMobile.Test.services;
 import EffectiveMobile.Test.DTO.CardCreateDto;
 import EffectiveMobile.Test.repositories.CardRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import EffectiveMobile.Test.entities.Card;
 
@@ -36,5 +38,16 @@ public class CardService {
 
     public Optional<Card> getCard(Long id){
         return cardRepository.findById(id);
+    }
+
+    public ResponseEntity<Void> deleteCard(Long id){
+        boolean exists = cardRepository.findById(id).isPresent();
+        if(exists){
+            cardRepository.deleteById(id);
+        }
+
+        return exists
+                ? ResponseEntity.noContent().build()
+                : ResponseEntity.notFound().build();
     }
 }

@@ -3,6 +3,7 @@ package EffectiveMobile.Test.Controllers;
 import EffectiveMobile.Test.DTO.CardCreateDto;
 import EffectiveMobile.Test.entities.Card;
 import EffectiveMobile.Test.services.CardService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,5 +32,10 @@ public class CardController {
     @PostMapping("/new")
     public Card addNewCard(@RequestBody CardCreateDto dto){
         return cardService.addCard(dto);
+    }
+
+    @DeleteMapping("/{card_id}")
+    public ResponseEntity<Void> deleteCard(@PathVariable("card_id") Long id){
+        return cardService.deleteCard(id);
     }
 }

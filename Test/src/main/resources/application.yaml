@@ -12,3 +12,7 @@ spring:
     contexts: development, production
     default-schema: public
     enabled: true
+
+app:
+  crypto:
+    base64Key: CV/haWajVMqK6cFGrUm0hpkNsLjQCGcm7jKj0ySQRZI=
