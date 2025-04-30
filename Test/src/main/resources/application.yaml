@@ -2,6 +2,11 @@ spring:
   application:
     name: Test
 
+  security:
+    user:
+      name: unused
+      password: unused
+
   datasource:
     url: jdbc:postgresql://localhost:5435/db-effective-mobile
     username: postgres
@@ -16,3 +21,6 @@ spring:
 app:
   crypto:
     base64Key: CV/haWajVMqK6cFGrUm0hpkNsLjQCGcm7jKj0ySQRZI=
+jwt:
+    secret: 8gakkudhe1rk4j7sie61k2ska82j2k1loqp9a5alqr12askld123
+    expirationMs: 3600000

@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-user-table
+      author: anton
+      changes:
+
+        - createTable:
+            tableName: app_user
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+
+              - column:
+                  name: first_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: second_name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+              - column:
+                  name: email
+                  type: VARCHAR(100)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+              - column:
+                  name: password_hash
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+
+        - sql:
+            stripComments: true
+            splitStatements: false
+            sql: >-
+              ALTER TABLE app_user
+              ADD CONSTRAINT chk_app_user_first_name_letters
+              CHECK (first_name ~ '^[A-Za-z]+$');
+
+        - sql:
+            stripComments: true
+            splitStatements: false
+            sql: >-
+              ALTER TABLE app_user
+              ADD CONSTRAINT chk_app_user_second_name_letters
+              CHECK (second_name ~ '^[A-Za-z]+$');
