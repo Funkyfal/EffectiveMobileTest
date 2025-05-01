@@ -37,8 +37,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth ->
                         auth.requestMatchers("/auth/**").permitAll()
-                                .requestMatchers("/user").hasAuthority("ROLE_USER")
-                                .requestMatchers("/admin").hasAuthority("ROLE_ADMIN")
+//                                .requestMatchers("/user").hasAuthority("ROLE_USER")
+                                .requestMatchers("/card/**").hasAuthority("ROLE_ADMIN")
                 );
 
         http.authenticationProvider(authenticationProvider());
