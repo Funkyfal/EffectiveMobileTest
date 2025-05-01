@@ -1,23 +1,28 @@
 package EffectiveMobile.Test.DTO;
 import EffectiveMobile.Test.entities.CardStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+
 import java.time.LocalDate;
 
 public class CardCreateDto {
 
-    @NotBlank(message = "Card number must not be blank")
+    @NotBlank
+    @Pattern(regexp = "\\d{16}", message = "Number must be exactly 16 digits")
     private String number;
 
-    @NotBlank(message = "Owner name must not be blank")
+    @NotBlank
     private String owner;
 
-    @NotNull(message = "Expiration date must not be null")
-    @FutureOrPresent(message = "Expiration date must be today or in the future")
+    @NotNull
+    @FutureOrPresent(message = "Expiration date must be today or later")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate expirationDate;
 
-    @NotNull(message = "Card status must be specified")
+    @NotNull
     private CardStatus status;
 
     public CardCreateDto() {}

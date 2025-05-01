@@ -29,6 +29,11 @@ public class CardController {
         return cardService.getAllCards();
     }
 
+    //TODO Номер карты строго 16 цифр
+    //TODO Обработать ошибку неверного статуса карты
+    //TODO Обработать ошибку неверного введения даты
+    //TODO Сделать так, чтобы при введении Owner в итоге получалось строго два слова, без цифр, чтобы такой обязательно был в базе
+    //TODO Сделать так, чтобы по истечению Expiration_Date карта переставала работать
     @PostMapping("/new")
     public Card addNewCard(@RequestBody CardCreateDto dto){
         return cardService.addCard(dto);
