@@ -34,12 +34,14 @@ public class SecurityConfig {
             throws Exception {
         http.csrf(csrf -> csrf.disable())
                 .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/**").permitAll()
-//                                .requestMatchers("/user").hasAuthority("ROLE_USER")
-                                .requestMatchers("/card/**").hasAuthority("ROLE_ADMIN")
-                );
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/admin/cards/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/user/cards/**").hasAuthority("ROLE_USER")
+                        .requestMatchers("/admin/users/**").hasAuthority("ROLE_ADMIN")
+                        .anyRequest().authenticated()
+        );
 
         http.authenticationProvider(authenticationProvider());
 
