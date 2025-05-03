@@ -24,7 +24,6 @@ public class AdminUserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // 1. Список всех пользователей
     @GetMapping
     public List<UserDto> listAll() {
         return userRepo.findAll().stream()
@@ -32,7 +31,6 @@ public class AdminUserController {
                 .toList();
     }
 
-    // 2. Изменить роли пользователя
     @PutMapping("/{id}/roles")
     public ResponseEntity<Object> updateRoles(
             @PathVariable Long id,

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +34,11 @@ public class AdminCardController {
     }
 
     @PostMapping
-    public CardResponseDto create(@Valid @RequestBody CardCreateDto dto) {
+    public ResponseEntity<CardResponseDto> create(@Valid @RequestBody CardCreateDto dto) {
         Card card = cardService.addCard(dto);
-        return new CardResponseDto(card);
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(new CardResponseDto(card));
     }
 
     @PostMapping("/{id}/block")

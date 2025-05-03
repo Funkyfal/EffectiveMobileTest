@@ -1,5 +1,6 @@
 package EffectiveMobile.Test.DTO;
 import EffectiveMobile.Test.entities.CardStatus;
+import EffectiveMobile.Test.services.CardService;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +27,8 @@ public class CardCreateDto {
     private CardStatus status;
 
     public CardCreateDto() {}
+
+    public CardCreateDto(String visa, String usd, LocalDate localDate) {}
 
     public CardCreateDto(String number, String owner, LocalDate expirationDate, CardStatus status) {
         this.number = number;
