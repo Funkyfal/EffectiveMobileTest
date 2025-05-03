@@ -1,4 +1,4 @@
-# Test Project – Spring Boot API с JWT-аутентификацией
+# Тестовое задание
 
 ## Описание
 
@@ -202,3 +202,5 @@ Authorization: Bearer <your_jwt_token>
 ```
 
 ---
+
+Спасибо! Если возникнут вопросы, то можно написать в Telegram @funkyfal.
