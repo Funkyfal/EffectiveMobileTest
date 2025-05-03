@@ -1,3 +1,30 @@
+#spring:
+#  application:
+#    name: Test
+#
+#  security:
+#    user:
+#      name: unused
+#      password: unused
+#
+#  datasource:
+#    url: jdbc:postgresql://localhost:5435/db-effective-mobile
+#    username: postgres
+#    password: DBPASSWORD
+#
+#  liquibase:
+#    change-log: classpath:db/changelog/db.changelog-master.yaml
+#    contexts: development, production
+#    default-schema: public
+#    enabled: true
+#
+#app:
+#  crypto:
+#    base64Key: CV/haWajVMqK6cFGrUm0hpkNsLjQCGcm7jKj0ySQRZI=
+#jwt:
+#    secret: 8gakkudhe1rk4j7sie61k2ska82j2k1loqp9a5alqr12askld123
+#    expirationMs: 3600000
+
 spring:
   application:
     name: Test
@@ -8,19 +35,20 @@ spring:
       password: unused
 
   datasource:
-    url: jdbc:postgresql://localhost:5435/db-effective-mobile
-    username: postgres
-    password: DBPASSWORD
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db-effective-mobile:5432/db-effective-mobile}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:DBPASSWORD}
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
     contexts: development, production
     default-schema: public
-    enabled: true
+    enabled: ${LIQUIBASE_ENABLED:true}
 
 app:
   crypto:
-    base64Key: CV/haWajVMqK6cFGrUm0hpkNsLjQCGcm7jKj0ySQRZI=
+    base64Key: ${APP_CRYPTO_BASE64KEY}
+
 jwt:
-    secret: 8gakkudhe1rk4j7sie61k2ska82j2k1loqp9a5alqr12askld123
-    expirationMs: 3600000
+  secret: ${JWT_SECRET}
+  expirationMs: ${JWT_EXPIRATION_MS:3600000}

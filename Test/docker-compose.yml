@@ -1,4 +1,3 @@
-version: '3.8'
 networks:
   default:
     name: my-network
@@ -14,3 +13,27 @@ services:
       POSTGRES_PASSWORD: DBPASSWORD
     ports:
       - "5435:5432"
+    networks:
+      - default
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: effective-mobile-app:latest
+    restart: always
+    depends_on:
+      - db-effective-mobile
+    environment:
+      SPRING_PROFILES_ACTIVE: production
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-effective-mobile:5432/db-effective-mobile
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: DBPASSWORD
+      LIQUIBASE_ENABLED: "true"
+      APP_CRYPTO_BASE64KEY: ${APP_CRYPTO_BASE64KEY}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION_MS: ${JWT_EXPIRATION_MS}
+    ports:
+      - "8080:8080"
+    networks:
+      - default
