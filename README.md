@@ -1,4 +1,3 @@
-````markdown
 # Test Project – Spring Boot API с JWT-аутентификацией
 
 ## Описание
@@ -14,7 +13,7 @@
 - Spring Security
 - Spring Data JPA
 - PostgreSQL
-- JWT (jjwt)
+- JWT
 - Liquibase
 - OpenAPI (springdoc-openapi)
 - Testcontainers (для тестов)
